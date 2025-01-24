@@ -5,6 +5,22 @@ const app = express();
 
 app.use(express.json());
 
+app.set('view engine', 'ejs');
+app.set('views', 'src/views');
+
+// Middlewares
+app.use((req, res, next) => {
+  console.log(`Request Type: ${req.method}`);
+  console.log(`Content Type: ${req.headers["content-type"]}`);
+  console.log(`Date: ${new Date()}`);
+
+  next();
+});
+
+app.get('/views/users', async (req, res) => {
+  res.render("index");
+});
+
 app.get("/users", async (req, res) => {
   try {
     const users = await UserModel.find({});
